@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persentase Kecocokan Hubungan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            height: 100vh;
+            margin: 20px;
+        }
+        
+        h3 {
+            text-align: center;
+            margin-top: -15px;
+            margin-bottom: -15px;
+            color: red;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px 20px 20px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .persen {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 10px;
+                    font-size: 20px;
+                    font-weight: bold;
+                    color: white;
+                    width: 80%;
+                    height: 60px;
+                    background-color: black;
+                    border-radius: 10px;
+                    margin-top: 25px;
+                }
+        
+        h3 {
+            font-size: 20px;
+            
+        }
+        p{
+            line-height: 10px;
+        }
+
+                .hamburger {
+                    cursor: pointer;
+                    padding: 10px;
+                    margin-top: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 150px;
+                    height: 40px;
+                    background-color: #007bff;
+                    border-radius: 5px;
+                    color: #fff;
+                }
+        
+                .results-container {
+                    position: absolute;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    display: none;
+                    margin-top: 0px;
+                    color: white;
+                }
+table, th, td {
+                    border: 1px solid red;
+        
+                }
+        
+                th, td {
+                    width: 100%;
+                    font-size: 13px;
+                    padding: 10px;
+                    text-align: center;
+                    background-color: black;
+                }
+    .delete-button {
+                            padding: 5px 10px;
+                            background-color: #ff4d4d;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+                
+                        .delete-button:hover {
+                            background-color: #ff1a1a;
+                        }
+        
+ footer {
+                    margin-top: 20px;
+                    text-align: center;
+                    color: #888;
+                }
+        
+    </style>
+</head>
+<body>
+    <h3>Silahkan coment nama kalian dan pasangan kalian</h3>
+    <div class="container">
+        <h1>Sak dek cocok dak nangis aok semeton</h1>
+        <form id="compatibilityForm">
+            <input type="text" id="name1" placeholder="Nama Cowok" required>
+            <input type="text" id="name2" placeholder="Nama Perempuan" required>
+            <button type="submit">Cek Kecocokan</button>
+        </form>
+        <div class="result">
+            <p id="persen1"></p>
+            <p id="persen"></p>
+        </div>
+        <div class="persen">
+            <h3 id="result"></h3>
+        </div>
+        
+   <footer>
+                &copy; Ruhul Amin Khairi
+            </footer>
+            
+    </div>
+  <button class="hamburger"  id="hamburgerMenu">Cek Semua Data</button>
+<div class="results-container"id="resultsContainer">
+ <table>
+                <thead>
+                    <tr>
+                        <th>Pasangan</th>
+                        <th>Persentase</th>
+                        <th>Keterangan</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTableBody">
+                </tbody>
+            </table>
+            </table>
+    <script>
+        document.getElementById('compatibilityForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
+            
+if (name1 && name2) {
+                            const compatibility = calculateCompatibility(name1, name2);
+                            let message = '';
+                            
+                            if(compatibility < 60) {
+                                message = 'Tidak cocok';
+                            } else if (compatibility < 80) {
+                                message = 'cocok';
+                            } else {
+                                message = 'Sangat cocok';
+                            };
+        
+                document.getElementById('persen1').textContent= `Persentase Kecocokan Antara`;
+                document.getElementById('persen').textContent = ` ${name1} dan ${name2} `;
+                document.getElementById('result').textContent= ` ${compatibility}% : (${message})`;
+
+const resultsTableBody = document.getElementById('resultsTableBody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>(${name1})<br>(${name2})</td>
+                    <td>${compatibility}%</td>
+                    <td>${message}</td>
+    <td><button class="delete-button">Hapus</button></td>
+                `;
+                resultsTableBody.appendChild(newRow);
+
+newRow.querySelector('.delete-button').addEventListener('click', function() {
+                            newRow.remove();
+                        });
+        
+        
+                document.getElementById('name1').value = '';
+                document.getElementById('name2').value = '';
+            }
+        });
+
+        function calculateCompatibility(name1, name2) {
+            const combinedNames = name1 + name2;
+            let sum = 0;
+            
+            for (let i = 0; i < combinedNames.length; i++) {
+                sum += combinedNames.charCodeAt(i);
+            }
+            
+            return sum % 101;
+        }
+        
+document.getElementById('hamburgerMenu').addEventListener('click', function() {
+                    const resultsContainer = document.getElementById('resultsContainer');
+                    if (resultsContainer.style.display === 'none' || resultsContainer.style.display === '') {
+                        resultsContainer.style.display = 'block';
+                    } else {
+                        resultsContainer.style.display = 'none';
+                    }
+                });
+    </script>
+</body>
+</html>
